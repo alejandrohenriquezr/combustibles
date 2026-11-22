@@ -9,7 +9,10 @@ for (p in c("survey", "calidad")) if (!requireNamespace(p, quietly=TRUE)) stop(p
 stopifnot(as.character(utils::packageVersion("calidad")) == "0.8.2")
 options(survey.lonely.psu="fail", survey.adjust.domain.lonely=FALSE)
 out <- args[2]; dir.create(out, recursive=TRUE, showWarnings=FALSE)
-h <- read.csv(args[1], colClasses=c(folio="character",estrato_muestreo="character",var_unit="character"))
+# Python exporta UTF-8 con BOM para Excel. En Windows, sin codificación explícita,
+# R incorpora el BOM al primer nombre y transforma "fe" en "X...fe".
+h <- read.csv(args[1], fileEncoding="UTF-8-BOM",
+              colClasses=c(folio="character",estrato_muestreo="character",var_unit="character"))
 stopifnot(!anyDuplicated(h$folio), all(h$fe > 0))
 h$varstrat <- h$estrato_muestreo; h$varunit <- h$var_unit
 dc <- survey::svydesign(ids=~varunit,strata=~varstrat,weights=~fe,data=h,nest=TRUE)

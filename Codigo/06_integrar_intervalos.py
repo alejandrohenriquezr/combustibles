@@ -8,13 +8,13 @@ import subprocess
 
 import numpy as np
 import pandas as pd
-from modulos.entorno import localizar_rscript, comprobar_dependencias_r
+from modulos.entorno import localizar_rscript, comprobar_dependencias_r, ambiente_r
 from modulos.epf_calculos import medianas_de_gastadores
 
 
 def integrar(salida,rscript=None):
     """Las dos medianas usan el mismo dominio con gasto positivo, incluido ingreso <=0."""
-    raiz=Path(__file__).resolve().parent;env=os.environ.copy()
+    raiz=Path(__file__).resolve().parent;env=ambiente_r()
     # renv consulta la biblioteca del R seleccionado; no se elige el primer
     # directorio calidad encontrado entre instalaciones de distintas versiones.
     ejecutable=localizar_rscript(rscript)

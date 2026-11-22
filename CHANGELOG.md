@@ -9,4 +9,6 @@
 - Ignore desde la raíz para bases, resultados, entornos y temporales.
 - Pruebas de clon limpio y publicación de Pages con GitHub Actions.
 - Recuperación de la salida anterior si falla el empaquetado.
+- Lectura explícita de CSV UTF-8 con BOM y entorno regional compatible con R en
+  Windows, para conservar el ponderador `fe` y las marcas estadísticas Unicode.
 - Copias y documentos heredados conservados en `.archivo_local/` fuera de Git.

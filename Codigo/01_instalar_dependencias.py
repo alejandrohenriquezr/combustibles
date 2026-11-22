@@ -15,7 +15,7 @@ import sys
 from urllib.parse import urlsplit
 import venv
 
-from modulos.entorno import localizar_rscript, comprobar_dependencias_r
+from modulos.entorno import localizar_rscript, comprobar_dependencias_r, ambiente_r
 
 
 def ambiente():
@@ -123,7 +123,7 @@ def instalar(rscript=None,solo_r=False,indice=None,diagnostico=False):
                 'print("Paquetes Python importados correctamente.")')
         subprocess.run([str(python),'-c',prueba],check=True,env=ambiente())
     # R usa su restauración propia y sus herramientas; no se mezcla con pip.
-    subprocess.run([ejecutable_r,'--vanilla',str(raiz/'02_instalar_paquetes.R'),str(raiz)],check=True,env=ambiente())
+    subprocess.run([ejecutable_r,'--vanilla',str(raiz/'02_instalar_paquetes.R'),str(raiz)],check=True,env=ambiente_r())
     comprobar_dependencias_r(ejecutable_r, raiz)
     print('Dependencias listas. Ejecutar python ejecutar.py desde la raíz del repositorio.')
 

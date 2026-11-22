@@ -8,6 +8,21 @@ import shutil
 import subprocess
 
 
+def ambiente_r():
+    """Evita pasar a R en Windows la locale Unix C.UTF-8, que allí no existe.
+
+    Se modifica solo el entorno del subproceso. R utiliza la locale UTF-8 nativa
+    de Windows; las selecciones regionales válidas del usuario se conservan.
+    """
+    env = os.environ.copy()
+    if os.name == "nt":
+        for nombre, valor in list(env.items()):
+            if (nombre.startswith("LC_") or nombre in ("LANG", "LANGUAGE")) and \
+                    valor.lower().replace("-", "") == "c.utf8":
+                env.pop(nombre)
+    return env
+
+
 def version_r_requerida(raiz=None):
     """La versión de referencia se lee del bloqueo, sin cambiar sus paquetes."""
     raiz = Path(raiz) if raiz else Path(__file__).resolve().parents[1]
@@ -18,7 +33,7 @@ def version_rscript(ejecutable):
     """Consulta R sin perfiles del usuario ni activación de otros proyectos."""
     r = subprocess.run([str(ejecutable), "--vanilla", "-e", "cat(as.character(getRversion()))"],
                        check=True, capture_output=True, text=True,
-                       encoding="utf-8", errors="replace", timeout=30)
+                       encoding="utf-8", errors="replace", timeout=30, env=ambiente_r())
     version = r.stdout.strip()
     if not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise RuntimeError(f"No se pudo identificar la versión de R en {ejecutable}.")
@@ -95,7 +110,8 @@ def comprobar_dependencias_r(ejecutable, raiz=None):
     # Se conserva el mismo R y todos los controles de versiones y carga.
     try:
         r = subprocess.run(comando, stdin=subprocess.DEVNULL,
-                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60,
+                           env=ambiente_r())
     except (OSError, subprocess.TimeoutExpired) as exc:
         guardar("proceso no completado", errores=str(exc))
         raise RuntimeError(f"No se pudo completar la verificación R. Detalle: {registro}") from exc

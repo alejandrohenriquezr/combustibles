@@ -15,6 +15,36 @@ from modulos import entorno
 
 
 class EntornoR(unittest.TestCase):
+    def test_locale_unix_invalida_se_omite_solo_en_proceso_r_windows(self):
+        with patch.dict(os.environ, {"LANG":"C.UTF-8", "LC_ALL":"C.UTF-8",
+                                     "LC_CTYPE":"Spanish_Chile.utf8"}), \
+             patch.object(entorno.os, "name", "nt"):
+            env = entorno.ambiente_r()
+            self.assertNotIn("LANG", env)
+            self.assertNotIn("LC_ALL", env)
+            self.assertEqual(env["LC_CTYPE"], "Spanish_Chile.utf8")
+            self.assertEqual(os.environ["LANG"], "C.UTF-8")
+
+    def test_locale_utf8_unix_valida_se_conserva_en_linux(self):
+        with patch.dict(os.environ, {"LANG":"C.UTF-8"}), \
+             patch.object(entorno.os, "name", "posix"):
+            self.assertEqual(entorno.ambiente_r()["LANG"], "C.UTF-8")
+
+    @unittest.skipUnless(os.getenv("EPF_RSCRIPT_PRUEBA"), "Requiere R 4.5.0 preparado")
+    def test_r_real_conserva_marcas_unicode_al_exportar_csv(self):
+        import csv
+        with tempfile.TemporaryDirectory(prefix="marcas R ") as d:
+            raiz = Path(d)
+            script = raiz / "marcas.R"
+            salida = raiz / "marcas.csv"
+            script.write_text('args <- commandArgs(trailingOnly=TRUE)\n'
+                              'write.csv(data.frame(marca=c("†","○","×")),args[1],'
+                              'row.names=FALSE,fileEncoding="UTF-8")\n', encoding="utf-8")
+            subprocess.run([os.environ["EPF_RSCRIPT_PRUEBA"], "--vanilla", str(script), str(salida)],
+                           check=True, capture_output=True, env=entorno.ambiente_r())
+            with salida.open(encoding="utf-8-sig", newline="") as archivo:
+                self.assertEqual([r["marca"] for r in csv.DictReader(archivo)], ["†", "○", "×"])
+
     def test_bloqueo_y_guardas_r_conservan_la_misma_version(self):
         # Las guardas de entrada de los scripts R corresponden al bloqueo entregado.
         self.assertEqual(entorno.version_r_requerida(), "4.5.0")
