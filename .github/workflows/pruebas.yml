@@ -21,7 +21,7 @@ jobs:
           cache: pip
           cache-dependency-path: Codigo/requisitos.txt
       - name: Instalar paquetes Python
-        run: python -m pip install --only-binary=:all: -r Codigo/requisitos.txt
+        run: 'python -m pip install --only-binary=:all: -r Codigo/requisitos.txt'
       - name: Comprobar dependencias
         run: python -m pip check
       - name: Probar un clon sin bases ni R instalado
