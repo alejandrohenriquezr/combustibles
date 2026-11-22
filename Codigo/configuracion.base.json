@@ -1,0 +1,177 @@
+{
+  "version": "5.0",
+  "periodo": "Octubre 2021–septiembre 2022",
+  "archivos": [
+    {
+      "archivo": "personas.csv",
+      "titulo": "Base Personas IX EPF (Formato CSV)",
+      "url": "https://www.ine.gob.cl/docs/default-source/encuesta-de-presupuestos-familiares/bbdd/ix-epf-(octubre-2021---septiembre-2022)/base-personas-ix-epf-(formato-csv).csv",
+      "bytes": 120870170,
+      "sha256": "8015588a01d4cc05e991bb3f3ae9b68db9a0c2ac717a0d9091d5141061e260a5"
+    },
+    {
+      "archivo": "gastos.csv",
+      "titulo": "Base Gastos IX EPF (Formato CSV)",
+      "url": "https://www.ine.gob.cl/docs/default-source/encuesta-de-presupuestos-familiares/bbdd/ix-epf-(octubre-2021---septiembre-2022)/base-gastos-ix-epf-(formato-csv).csv",
+      "bytes": 152107750,
+      "sha256": "f4017a49573f4b05cb1e06ddd1bf1b11375e918824a80c65d5c379161a01dcb1"
+    },
+    {
+      "archivo": "ccif.csv",
+      "titulo": "CCIF IX EPF (Formato CSV)",
+      "url": "https://www.ine.gob.cl/docs/default-source/encuesta-de-presupuestos-familiares/bbdd/ix-epf-(octubre-2021---septiembre-2022)/ccif-ix-epf-(formato-csv).csv",
+      "bytes": 144079,
+      "sha256": "8300a9bcfbe4e227cb192cf6c7b3878e17f5154346f43ad36d928244849ab42e"
+    },
+    {
+      "archivo": "tabulados.xlsx",
+      "titulo": "Tabulados principales IX EPF, estimaciones",
+      "url": "https://www.ine.gob.cl/docs/default-source/encuesta-de-presupuestos-familiares/cuadros-estadisticos/ix-epf/tabulados-principales-resultados-ix-epf-(estimaciones).xlsx",
+      "bytes": 2883855,
+      "sha256": "a26a5c46513e7134ba5082e50eb31f885860b8f3bdbbea143aa50b8e5fa0fce8"
+    }
+  ],
+  "codigos": {
+    "gasolina": "07.2.2.02.01",
+    "diesel": "07.2.2.01.01"
+  },
+  "manual": {
+    "titulo": "INE (2025). Manual de uso de bases de datos IX EPF, lenguaje R. Portada: mayo 2025; créditos: segunda versión abril 2025.",
+    "url": "https://www.ine.gob.cl/docs/default-source/encuesta-de-presupuestos-familiares/manuales/ix-epf-(octubre-2021---septiembre-2022)/manual-de-uso-de-bases-de-datos-ix-epf-(lenguaje-r).pdf",
+    "paginas": "pp. 13–14, 19–21, 55–59, 72–79 y 80–84 (numeración impresa y PDF coincidentes)",
+    "sha256": "29e5d2d33a425366011c3be29c662fead95fab3f443c34d020fc44a2fc431d8e"
+  },
+  "metodo": [
+    {
+      "regla": "Unidad de análisis",
+      "detalle": "Un hogar por folio, parentesco ==1. Variables del hogar constantes entre integrantes. Manual IX EPF, pp. 13–14 y 73."
+    },
+    {
+      "regla": "Combustibles de movilización",
+      "detalle": "Gasolina 07.2.2.02.01 y diésel 07.2.2.01.01, transporte personal. No se identifica el octanaje; no incluye pasajes ni combustibles domésticos."
+    },
+    {
+      "regla": "Mismos hogares",
+      "detalle": "Ambas medianas se calculan con los mismos hogares que registran gasto >0 en el combustible o unión seleccionada. El ingreso <=0 se conserva; la mediana de ingreso debe ser positiva."
+    },
+    {
+      "regla": "Período y cobertura",
+      "detalle": "Montos mensuales de octubre 2021–septiembre 2022; capitales regionales y conurbaciones urbanas. No son gastos ni ingresos medidos en 2026. Manual, pp. 10 y 13–14."
+    },
+    {
+      "regla": "Quintiles y deciles",
+      "detalle": "Grupos de todos los hogares antes del filtro, ordenados por ingreso per cápita sin arriendo imputado. Regla especial de orden para ingreso total <=0, sin sustituir el ingreso en las estadísticas. Factores fraccionados en los límites. Manual, pp. 72–79."
+    },
+    {
+      "regla": "Métrica ciudadana",
+      "detalle": "100 × gasto mediano en combustibles / ingreso mediano del mismo grupo gastador. Relaciona dos medianas del grupo; no es el porcentaje individual de cada hogar."
+    },
+    {
+      "regla": "IC 95% conjunto",
+      "detalle": "1999 réplicas bootstrap de pseudo-conglomerados dentro de estratos, semilla 20261119. En cada réplica se recalculan ambas medianas y su relación. IC percentil, cuantiles tipo 1. No se dividen extremos de IC independientes."
+    },
+    {
+      "regla": "Alcance del bootstrap",
+      "detalle": "Aproximación con el diseño público, cortes y factores finales fijos; sin recalibrar factores o ajustes de no respuesta por réplica. No incorpora cambios de ingreso o consumo posteriores."
+    },
+    {
+      "regla": "Marcas estadísticas",
+      "detalle": "†: diferencia con el quintil anterior no significativa, p Holm >=0,05; familia de cuatro comparaciones por indicador. Covarianzas conjuntas conservadas. No significancia no demuestra igualdad."
+    },
+    {
+      "regla": "Precisión adaptada",
+      "detalle": "‡: No fiable al aplicar n, gl y CV del esquema Chile de calidad mediante assess a los insumos bootstrap. Adaptación explícita a medianas y razón de medianas; no estimador nativo de calidad ni validación oficial de este indicador."
+    },
+    {
+      "regla": "Controles",
+      "detalle": "20 celdas oficiales de ingreso, gasto, gasolina y diésel por quintil (4A y 7B), tolerancia $0,02. EE de ingreso 18.082,39: calidad::create_mean, manual p. 82."
+    }
+  ],
+  "consulta": "2026-11-22",
+  "fuentes_metodo": [
+    {
+      "titulo": "CRAN. calidad 0.8.2",
+      "url": "https://cran.r-project.org/web/packages/calidad/calidad.pdf",
+      "paginas": "assess pp. 2–4; create_mean pp. 5–6 (control de ingreso)"
+    },
+    {
+      "titulo": "CRAN. survey, referencia de bootstrap",
+      "url": "https://cran.r-project.org/web/packages/survey/survey.pdf",
+      "paginas": "Bootstrap pp. 10–15; withReplicates pp. 160–162 (edición 4.5 consultada; ejecutada 4.4-2)"
+    },
+    {
+      "titulo": "R stats. p.adjust",
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html",
+      "paginas": "Secciones Details y References; sin paginación"
+    },
+    {
+      "titulo": "R stats. quantile",
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/stats/html/quantile.html",
+      "paginas": "Sección Types, tipo 1; sin paginación"
+    },
+    {
+      "titulo": "renv. Documentación oficial",
+      "url": "https://rstudio.github.io/renv/articles/renv.html",
+      "paginas": "Secciones Introduction y Workflow; sin paginación"
+    }
+  ],
+  "comparaciones": {
+    "alpha": 0.05,
+    "familia_graficos": "cuatro pares adyacentes por indicador",
+    "ajuste": "Holm",
+    "replicas_mediana": 1999,
+    "semilla": 20261119,
+    "supuesto": "Cortes y factores finales fijos; remuestreo aproximado de pseudo-conglomerados dentro de estratos; no se recalibran factores.",
+    "indicadores": [
+      "gasto_mediano",
+      "ingreso_mediano",
+      "relacion_medianas"
+    ]
+  },
+  "gpp": {
+    "titulo": "GlobalPetrolPrices. Precios de gasolina 95 y diésel, 20 cortes semanales comunes",
+    "periodo": "2025-01-27–2026-11-16",
+    "paises": 17,
+    "observaciones": 782,
+    "archivo": "gpp_precios.csv",
+    "sha256": "8bf32aa157f285d63658d582bde98a706ebf8e376774525c229a6250a19b17dd",
+    "fuentes": "gpp_fuentes.json",
+    "unidad": "USD/litro",
+    "metodo": "Un corte semanal común por mes; no promedio mensual. Páginas GPP actuales y copias públicas archivadas; 1=menor precio.",
+    "inicio": "2025-01-01",
+    "cortes": 23,
+    "consulta_utc": "2026-11-22T16:34:29.829471+00:00",
+    "clp": {
+      "archivo": "gpp_chile_clp.csv",
+      "meses": 23,
+      "sha256": "d67170a21ea769e2bbbd67a8c35caee47debab2321fb16b4fa17d536b096cf1c",
+      "referencias_sin_dia": [
+        "2026-09"
+      ]
+    }
+  },
+  "indicador": {
+    "nombre": "Gasto mediano en combustibles / ingreso mediano de los hogares que declaran ese gasto",
+    "formula": "100 × mediana ponderada del gasto / mediana ponderada del ingreso",
+    "dominio": "Mismos hogares con gasto en gasolina o diésel >0; se conservan ingresos <=0 en ambas medianas",
+    "ingreso": "ing_disp_hog_hd: ingreso disponible del hogar sin arriendo imputado",
+    "combustibles": "Gasolina y diésel de transporte personal; no incluye pasajes ni combustibles domésticos"
+  },
+  "ppa": {
+    "archivo": "ppa_factores_anuales.csv",
+    "sha256": "16d300c004a2922ea5d1b657c0f63cf809287a7b075459999e7baa8e09983c70",
+    "fuente": {
+      "archivo": "WEOOct2026all.xlsx",
+      "titulo": "FMI. World Economic Outlook Database, octubre 2026, Countries",
+      "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/0FA3DC49A04D446E9D69DBEB29979E1C/en/WEOOct2026all.xlsx",
+      "bytes": 5480592,
+      "sha256": "2aa4f70a05931197b41ed7e0202dc56eee8d816858ac14521e4f8f5dbc38696c"
+    },
+    "portal": "https://data.imf.org/en/datasets/IMF.RES:WEO",
+    "metodo_url": "https://data.imf.org/en/Datasets/WEO/Frequently-Asked-Questions",
+    "formula": "precio_GPP_USD * (PPPGDP / NGDPD) del país y año",
+    "alcance": "Aproximación con PPA anual del PIB; factores constantes dentro de 2025 y 2026. Sin tipo de cambio de cada fecha. 2026 incorpora proyecciones. No mide ingresos o salarios.",
+    "sensibilidad": "Factores de 2025 fijos en toda la ventana; mismo universo y precios.",
+    "localizador": "Countries; indicadores NGDP, NGDPD, PPPGDP y PPPEX; columnas BW (2025) y BX (2026); celdas y estatus en ppa_factores_anuales.csv. Sin paginación."
+  }
+}
