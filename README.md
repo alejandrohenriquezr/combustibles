@@ -106,6 +106,7 @@ reproducir la ejecución. No debe añadirse al repositorio ni a GitHub Pages.
 - [Fuentes, trazabilidad y límites de reconstrucción](documentacion/fuentes.md).
 - [Arquitectura y productos](documentacion/arquitectura.md).
 - [Publicar y mantener GitHub Pages](documentacion/github-pages.md).
+- [Validación completa y correcciones de Windows](documentacion/validacion.md).
 - [Cambios de la preparación del repositorio](CHANGELOG.md).
 
 ## Pruebas

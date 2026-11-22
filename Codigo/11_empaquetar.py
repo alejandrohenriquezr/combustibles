@@ -17,7 +17,7 @@ def empaquetar(raiz,resultados,destino,datos=None):
     for name in requeridos[:3]:items.append((resultados/name,name))
     for p in resultados.rglob('*'):
         if not p.is_file() or p.name in requeridos[:3]:continue
-        if p.suffix in ('.csv','.json','.txt','.png','.svg'):items.append((p,'Resultados/'+str(p.relative_to(resultados))))
+        if p.suffix in ('.csv','.json','.txt','.png','.svg'):items.append((p,'Resultados/'+p.relative_to(resultados).as_posix()))
     # Todo el código entregado se encuentra en una carpeta única reproducible.
     def codigo_publicable():
         # Se podan los entornos antes de recorrerlos; no se inspeccionan miles
@@ -38,11 +38,11 @@ def empaquetar(raiz,resultados,destino,datos=None):
         if rel.parts[0] in ['datos','resultados','resultados_anteriores','diagnosticos','.venv','.git','__pycache__','tests_cache']:continue
         if any(v in rel.parts for v in ['library','bootstrap','staging','cache','__pycache__','.pytest_cache']):continue
         if p.suffix in ['.py','.R','.json','.csv','.txt','.md','.lock','.docx'] or p.name in ['.gitignore','.Rprofile','DESCRIPTION']:
-            items.append((p,'Codigo/'+str(rel)))
+            items.append((p,'Codigo/'+rel.as_posix()))
     # Las fuentes se incluyen también en Codigo/datos: al descomprimir se puede
     # ejecutar una reproducción sin moverlas. El modo normal siempre las consulta.
     for p in datos.rglob('*'):
-        if p.is_file() and p.suffix!='.part':items.append((p,'Codigo/datos/'+str(p.relative_to(datos))))
+        if p.is_file() and p.suffix!='.part':items.append((p,'Codigo/datos/'+p.relative_to(datos).as_posix()))
     # La copia clonable conserva también su entrada única y documentación.
     proyecto=raiz.parent
     for nombre in ['ejecutar.py','README.md','CHANGELOG.md','.gitignore','.gitattributes']:
